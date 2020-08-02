@@ -8,6 +8,5 @@ target 'UBDCollection_Example' do
   target 'UBDCollection_Tests' do
     inherit! :search_paths
 
-    pod 'FBSnapshotTestCase'
   end
 end
