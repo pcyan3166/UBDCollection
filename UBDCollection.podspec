@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/pcyan/UBDCollection'
+  s.homepage         = 'https://github.com/pcyan3166/UBDCollection'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'pcyan' => 'yanpengchao@hotmail.com' }
-  s.source           = { :git => 'https://github.com/pcyan/UBDCollection.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/pcyan3166/UBDCollection.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
@@ -41,4 +41,5 @@ TODO: Add long description of the pod here.
 #  s.library = 'xml2'
   s.dependency 'FMDB'
   s.dependency 'AFNetworking', '~> 4.0'
+  s.dependency 'BasicTools'
 end

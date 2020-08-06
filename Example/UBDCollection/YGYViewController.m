@@ -7,6 +7,7 @@
 //
 
 #import "YGYViewController.h"
+#import <BasicTools/BasicTools+DeviceInfo.h>
 
 @interface YGYViewController ()
 
@@ -18,6 +19,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    NSLog(@"sandbox path is %@", [NSBundle mainBundle].bundlePath);
+    NSLog(@"current device is %@", [BasicTools deviceType]);
 }
 
 - (void)didReceiveMemoryWarning

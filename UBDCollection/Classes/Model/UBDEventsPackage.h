@@ -17,17 +17,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *appId;
 /// app当前的版本号（2.2.2.95）
 @property (nonatomic, strong) NSString *appVersion;
-/// 操作系统类型（iOS，Android，Windows）
+/// 当前操作系统类型（iOS，Android，Symbian，Mac OS，Windows，Linux，Windows Phone等）
 @property (nonatomic, strong) NSString *osType;
 /// 操作系统版本（iOS 13.4.6）
 @property (nonatomic, strong) NSString *osVersion;
-/// 设备品牌（iPhone，华为，三星）
+/// 设备品牌（iPhone，华为，三星、小米、魅族，锤子等）
 @property (nonatomic, strong) NSString *deviceBrand;
-/// 设备类型（iPhone 4S）
+/// 设备具体型号（iPhone 11 Pro，华为 P40 Pro）
 @property (nonatomic, strong) NSString *deviceType;
-/// 当前网络类型
+/// 当前网络条件（WIFI，5G，4G，3G，2G）
 @property (nonatomic, strong) NSString *networkType;
-/// 设备唯一标识
+/// 设备号（唯一标识一台设备，最好长时间保持不变）
 @property (nonatomic, strong) NSString *deviceId;
 /// 用户唯一标识
 @property (nonatomic, strong) NSString *userId;

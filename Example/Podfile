@@ -2,6 +2,9 @@ use_frameworks!
 
 platform :ios, '9.0'
 
+source 'https://github.com/pcyan3166/repo.git'
+source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+
 target 'UBDCollection_Example' do
   pod 'UBDCollection', :path => '../'
 
