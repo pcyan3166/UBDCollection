@@ -32,9 +32,9 @@ Pod::Spec.new do |s|
 
   s.source_files = 'UBDCollection/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'UBDCollection' => ['UBDCollection/Assets/*.png']
-  # }
+   s.resource_bundles = {
+     'UBDCollection' => ['UBDCollection/Assets/*.*']
+   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'Foundation'

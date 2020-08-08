@@ -6,10 +6,7 @@
 //
 
 #import "UBDPageInfosService.h"
-
-@implementation UBDPageInfoItem
-
-@end
+#import "UBDPageInfoItem.h"
 
 @interface UBDPageInfosService ()
 

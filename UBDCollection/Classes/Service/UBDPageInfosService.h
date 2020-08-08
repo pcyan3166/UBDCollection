@@ -9,14 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UBDPageInfoItem : NSObject
-
-/// 模块Id
-@property (nonatomic, assign) NSInteger moduleId;
-/// 页面Id
-@property (nonatomic, assign) NSInteger pageId;
-
-@end
+@class UBDPageInfoItem;
 
 /// 维护页面信息的服务
 @interface UBDPageInfosService : NSObject

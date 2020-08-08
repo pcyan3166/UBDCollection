@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_OPTIONS(NSInteger, ESendStatus) {
+typedef NS_OPTIONS(NSUInteger, ESendStatus) {
     eUnknown =          0,          // 初始值，未知状态
     eSending =          0 << 1,     // 发送中
     eFinished =         1 << 1,     // 收到响应，发送完成

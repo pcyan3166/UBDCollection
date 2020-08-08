@@ -23,6 +23,9 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		CA89565124DEFD830031A251 /* YGYPageOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA89565024DEFD830031A251 /* YGYPageOneViewController.m */; };
+		CA89565424DEFD990031A251 /* YGYPageTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA89565324DEFD990031A251 /* YGYPageTwoViewController.m */; };
+		CA89565724DEFDAA0031A251 /* YGYPageThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA89565624DEFDAA0031A251 /* YGYPageThreeViewController.m */; };
 		CE29B00B77826E345175600C /* Pods_UBDCollection_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCF09A861968BF252BB3880D /* Pods_UBDCollection_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +68,12 @@
 		9484F7C127DFE4453457C361 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		9ABC8263DB1819668D11F977 /* Pods-UBDCollection_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBDCollection_Tests.debug.xcconfig"; path = "Target Support Files/Pods-UBDCollection_Tests/Pods-UBDCollection_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BCF09A861968BF252BB3880D /* Pods_UBDCollection_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UBDCollection_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA89564F24DEFD830031A251 /* YGYPageOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGYPageOneViewController.h; sourceTree = "<group>"; };
+		CA89565024DEFD830031A251 /* YGYPageOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGYPageOneViewController.m; sourceTree = "<group>"; };
+		CA89565224DEFD990031A251 /* YGYPageTwoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGYPageTwoViewController.h; sourceTree = "<group>"; };
+		CA89565324DEFD990031A251 /* YGYPageTwoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGYPageTwoViewController.m; sourceTree = "<group>"; };
+		CA89565524DEFDAA0031A251 /* YGYPageThreeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGYPageThreeViewController.h; sourceTree = "<group>"; };
+		CA89565624DEFDAA0031A251 /* YGYPageThreeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGYPageThreeViewController.m; sourceTree = "<group>"; };
 		E16AD388222810773F7098B1 /* Pods_UBDCollection_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UBDCollection_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F322D6687F13167D39D6AF57 /* Pods-UBDCollection_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBDCollection_Example.debug.xcconfig"; path = "Target Support Files/Pods-UBDCollection_Example/Pods-UBDCollection_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +160,12 @@
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				CA89564F24DEFD830031A251 /* YGYPageOneViewController.h */,
+				CA89565024DEFD830031A251 /* YGYPageOneViewController.m */,
+				CA89565224DEFD990031A251 /* YGYPageTwoViewController.h */,
+				CA89565324DEFD990031A251 /* YGYPageTwoViewController.m */,
+				CA89565524DEFDAA0031A251 /* YGYPageThreeViewController.h */,
+				CA89565624DEFDAA0031A251 /* YGYPageThreeViewController.m */,
 			);
 			name = "Example for UBDCollection";
 			path = UBDCollection;
@@ -374,8 +389,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA89565124DEFD830031A251 /* YGYPageOneViewController.m in Sources */,
 				6003F59E195388D20070C39A /* YGYAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* YGYViewController.m in Sources */,
+				CA89565424DEFD990031A251 /* YGYPageTwoViewController.m in Sources */,
+				CA89565724DEFDAA0031A251 /* YGYPageThreeViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,6 +9,16 @@
 
 @implementation UBDEventItemService
 
++ (instancetype)shareInstance {
+    static UBDEventItemService *sInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sInstance = [[UBDEventItemService alloc] init];
+    });
+    
+    return sInstance;
+}
+
 + (void)addEvent:(UBDEventItem *)item {
     //
 }
@@ -29,5 +39,16 @@
     //
 }
 
++ (void)getPreviousPageEventsWithPartitionEventId:(NSInteger)eId
+                                     andPageCount:(NSUInteger)count
+                                   andResultBlock:(GetEventsDataResultBlock)resultBlock {
+    //
+}
+
++ (void)getNextPageEventsWithPartitionEventId:(NSInteger)eId
+                                 andPageCount:(NSUInteger)count
+                               andResultBlock:(GetEventsDataResultBlock)resultBlock {
+    //
+}
 
 @end

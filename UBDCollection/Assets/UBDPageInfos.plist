@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>mainModule</key>
+	<dict>
+		<key>moduleId</key>
+		<integer>1</integer>
+		<key>moduleName</key>
+		<string>主工程</string>
+		<key>pages</key>
+		<dict>
+			<key>YGYViewController</key>
+			<dict>
+				<key>pageId</key>
+				<integer>1</integer>
+				<key>pageName</key>
+				<string>Tab1-首页</string>
+			</dict>
+			<key>YGYPageOneViewController</key>
+			<dict>
+				<key>pageId</key>
+				<integer>2</integer>
+				<key>pageName</key>
+				<string>第一关</string>
+			</dict>
+			<key>YGYPageTwoViewController</key>
+			<dict>
+				<key>pageId</key>
+				<integer>3</integer>
+				<key>pageName</key>
+				<string>第二关</string>
+			</dict>
+			<key>YGYPageThreeViewController</key>
+			<dict>
+				<key>pageId</key>
+				<integer>4</integer>
+				<key>pageName</key>
+				<string>第三关</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

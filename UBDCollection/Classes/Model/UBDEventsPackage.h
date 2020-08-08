@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class UBDEventItem;
+/// 每次请求的数据包
 @interface UBDEventsPackage : NSObject
 
 #pragma mark - 公共字段
