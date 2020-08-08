@@ -6,14 +6,7 @@
 //
 
 #import "UBDCollection.h"
-#import "UBDPageInfoProtocol.h"
-
-@interface UBDCollection () <UBDPageInfoProtocol>
-
-@end
 
 @implementation UBDCollection
-
-
 
 @end
