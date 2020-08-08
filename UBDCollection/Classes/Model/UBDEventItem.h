@@ -27,6 +27,8 @@ typedef NS_OPTIONS(NSInteger, ESendStatus) {
 @property (nonatomic, assign) NSInteger moduleId;
 /// 页面Id
 @property (nonatomic, assign) NSInteger pageId;
+/// 页面深度（在当前页面栈中的位置信息，用于在上下文中识别是跳转下一级还是返回上一级）
+@property (nonatomic, assign) NSInteger pLevel;
 /// 事件Id
 @property (nonatomic, assign) NSInteger eventId;
 /// 额外参数（建议以Json String的形式存储，数据不宜过长，不要超过1024个字符）

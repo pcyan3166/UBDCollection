@@ -8,12 +8,16 @@
 
 #import "YGYViewController.h"
 #import <BasicTools/BasicTools+DeviceInfo.h>
+#import <UBDCollection/UBDPageInfoProtocol.h>
+#import <UBDCollection/UBDPageInfo.h>
 
-@interface YGYViewController ()
+@interface YGYViewController () <UBDPageInfoProtocol>
 
 @end
 
 @implementation YGYViewController
+@module(6)
+@page(6)
 
 - (void)viewDidLoad
 {
@@ -28,6 +32,16 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UBDPageInfoProtocol functions
+
+- (NSInteger)moduleId {
+    return 0;
+}
+
+- (NSInteger)pageId {
+    return 0;
 }
 
 @end
