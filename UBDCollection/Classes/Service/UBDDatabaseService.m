@@ -24,8 +24,16 @@
 - (void)setupDB {
     NSArray *documentpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentRootPath = documentpaths[0];
+    
+    NSString *ubdDirectory = [documentRootPath stringByAppendingPathComponent:@"UBDCollection"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL exist = [fileManager fileExistsAtPath:ubdDirectory isDirectory:NULL];
+    if (!exist) {
+        [fileManager createDirectoryAtPath:ubdDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+    
     NSString *dbPath = [documentRootPath stringByAppendingPathComponent:@"UBDCollection/ubd.db"];
-    _database = [FMDatabase databaseWithPath:dbPath];
+     _database = [FMDatabase databaseWithPath:dbPath];
     
     if ([_database open]) {
         // 如果没有表，则创建表
@@ -50,7 +58,7 @@
         sendStatus INT1 NULL DEFAULT 0,                     \
         realTime INT1 NULL DEFAULT 0,                       \
         ts TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00',    \
-        rId INTEGER NULL DEFAULT -1,                        \
+        rId INTEGER NULL DEFAULT -1                         \
         )",
         
         @"CREATE TABLE IF NOT EXISTS t_events_packages (    \
@@ -63,7 +71,7 @@
         tags TEXT NULL DEFAULT '',                          \
         preTs TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00', \
         curTs TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00', \
-        rId INTEGER NULL DEFAULT -1,                        \
+        rId INTEGER NULL DEFAULT -1                         \
         )",
         
         @"CREATE TABLE IF NOT EXISTS t_requests (           \
@@ -71,7 +79,7 @@
         reqTs TIMESTAMP NOT NULL,                           \
         resTs TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00', \
         success INT1 DEFAULT 0,                             \
-        failReason TEXT NULL DEFAULT '',                    \
+        failReason TEXT NULL DEFAULT ''                     \
         )"
     ];
 }
