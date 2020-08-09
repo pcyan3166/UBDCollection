@@ -9,11 +9,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @class FMDatabase;
+@class FMDatabaseQueue;
 
 @interface UBDDatabaseService : NSObject
 
-/// sqlite database 句柄
-@property (nonatomic, assign) FMDatabase *database;
+/// 数据库队列，为多线程操作数据库提供线程安全保障
+@property (nonatomic, strong) FMDatabaseQueue *databaseQueue;
 
 /// 单例对象
 + (instancetype)shareInstance;

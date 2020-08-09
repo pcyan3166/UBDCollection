@@ -16,13 +16,19 @@ typedef NS_OPTIONS(NSUInteger, ESendStatus) {
     eAllStatus =        0xFFFFFFFF  // 所有状态
 };
 
+typedef NS_ENUM(Byte, EEventType) {
+    eClickEvent = 0,
+    eShowEvent,
+    eEnterPageEvent,
+};
+
 /// 存储事件的数据结构
 @interface UBDEventItem : NSObject
 
 /// 数据库中的Id
 @property (nonatomic, assign) NSInteger eId;
 /// 事件发生的时间戳（精确到毫秒）
-@property (nonatomic, assign) NSDate *ts;
+@property (nonatomic, assign) NSInteger ts;
 /// 模块Id
 @property (nonatomic, assign) NSInteger moduleId;
 /// 页面Id
@@ -31,6 +37,8 @@ typedef NS_OPTIONS(NSUInteger, ESendStatus) {
 @property (nonatomic, assign) NSInteger pLevel;
 /// 事件Id
 @property (nonatomic, assign) NSInteger eventId;
+/// 事件类型
+@property (nonatomic, assign) EEventType eventType;
 /// 额外参数（建议以Json String的形式存储，数据不宜过长，不要超过1024个字符）
 @property (nonatomic, strong) NSString *extraInfo;
 /// 发送状态

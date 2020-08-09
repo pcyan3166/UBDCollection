@@ -33,17 +33,15 @@
     }
     
     NSString *dbPath = [documentRootPath stringByAppendingPathComponent:@"UBDCollection/ubd.db"];
-     _database = [FMDatabase databaseWithPath:dbPath];
+    _databaseQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+    NSLog(@"dbPath is %@", dbPath);
     
-    if ([_database open]) {
-        // 如果没有表，则创建表
-        NSArray<NSString *> *createTableCmds = [self createTableCmds];
+    NSArray<NSString *> *createTableCmds = [self createTableCmds];
+    [_databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         for (NSString *cmd in createTableCmds) {
-            [_database executeUpdate:cmd];
+            [db executeUpdate:cmd];
         }
-    } else {
-        NSLog(@"db file open failed.");
-    }
+    }];
 }
 
 - (NSArray<NSString *> *)createTableCmds {
@@ -53,11 +51,12 @@
         moduleId INTEGER NOT NULL,                          \
         pageId INTEGER NOT NULL,                            \
         eventId INTEGER NOT NULL,                           \
+        eventType INT1 NOT NULL,                            \
         pLevel INTEGER NOT NULL,                            \
         extraInfo TEXT NULL DEFAULT '',                     \
         sendStatus INT1 NULL DEFAULT 0,                     \
         realTime INT1 NULL DEFAULT 0,                       \
-        ts TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00',    \
+        ts BIGINT NULL DEFAULT 0,                           \
         rId INTEGER NULL DEFAULT -1                         \
         )",
         
@@ -69,15 +68,15 @@
         deviceId TEXT NOT NULL,                             \
         userId TEXT NULL DEFAULT '',                        \
         tags TEXT NULL DEFAULT '',                          \
-        preTs TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00', \
-        curTs TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00', \
+        preTs BIGINT NULL DEFAULT 0,                        \
+        curTs BIGINT NULL DEFAULT 0,                        \
         rId INTEGER NULL DEFAULT -1                         \
         )",
         
         @"CREATE TABLE IF NOT EXISTS t_requests (           \
         rId INTEGER PRIMARY KEY AUTOINCREMENT,              \
-        reqTs TIMESTAMP NOT NULL,                           \
-        resTs TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00', \
+        reqTs BIGINT NOT NULL,                              \
+        resTs BIGINT NULL DEFAULT 0,                        \
         success INT1 DEFAULT 0,                             \
         failReason TEXT NULL DEFAULT ''                     \
         )"

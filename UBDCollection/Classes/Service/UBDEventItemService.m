@@ -6,6 +6,9 @@
 //
 
 #import "UBDEventItemService.h"
+#import "UBDDatabaseService.h"
+#import "UBDEventItem.h"
+#import <fmdb/FMDB.h>
 
 @implementation UBDEventItemService
 
@@ -20,7 +23,18 @@
 }
 
 + (void)addEvent:(UBDEventItem *)item {
-    //
+    NSString *sql = [NSString stringWithFormat:@"insert into t_events \
+                     (moduleId, pageId, eventId, eventType, pLevel, extraInfo, sendStatus, realTime, ts) values (%ld, %ld, %ld, %d, %ld, %@, %lu, %d, %ld)",
+                     item.moduleId, item.pageId, item.eventId, item.eventType, item.pLevel,
+                     item.extraInfo ? item.extraInfo : @"''", item.sendStatus, item.realTime, item.ts];
+    [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        [db executeUpdate:sql];
+        
+        FMResultSet *set = [db executeQuery:@"select * from t_events where rowid = last_insert_rowid()"];
+        if ([set next]) {
+            item.eId = [set intForColumn:@"eId"];
+        }
+    }];
 }
 
 + (void)removeEventWithId:(NSInteger)eId {

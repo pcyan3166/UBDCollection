@@ -11,6 +11,8 @@
 #import <UBDCollection/UBDPageInfoProtocol.h>
 #import <UBDCollection/UBDPageInfo.h>
 #import <UBDCollection/UBDDatabaseService.h>
+#import <UBDCollection/UBDEventItemService.h>
+#import <UBDCollection/UBDEventItem.h>
 
 @interface YGYViewController () <UBDPageInfoProtocol>
 
@@ -36,6 +38,19 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    UBDEventItem * item = [[UBDEventItem alloc] init];
+    item.moduleId = 1;
+    item.pageId = 1;
+    item.eventType = eEnterPageEvent;
+    item.eventId = 1;
+    item.pLevel = 1;
+    item.ts = [[NSDate date] timeIntervalSince1970] * 1000;
+    [UBDEventItemService addEvent:item];
 }
 
 #pragma mark - UBDPageInfoProtocol functions
