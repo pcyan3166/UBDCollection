@@ -22,7 +22,7 @@ typedef NS_OPTIONS(NSUInteger, ESendStatus) {
 /// 数据库中的Id
 @property (nonatomic, assign) NSInteger eId;
 /// 事件发生的时间戳（精确到毫秒）
-@property (nonatomic, assign) NSTimeInterval ts;
+@property (nonatomic, assign) NSDate *ts;
 /// 模块Id
 @property (nonatomic, assign) NSInteger moduleId;
 /// 页面Id
@@ -37,6 +37,8 @@ typedef NS_OPTIONS(NSUInteger, ESendStatus) {
 @property (nonatomic, assign) ESendStatus sendStatus;
 /// 是否实时发送（YES为实时，NO为非实时）
 @property (nonatomic, assign) BOOL realTime;
+/// 外键：请求Id，用于校验检查点是否被正确打上
+@property (nonatomic, assign) NSInteger rId;
 
 @end
 

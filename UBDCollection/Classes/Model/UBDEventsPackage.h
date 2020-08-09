@@ -45,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - evnets 数据
 /// 本次包装的事件信息
 @property (nonatomic, strong) NSArray<UBDEventItem *> *events;
+/// 外键：请求Id，用于校验检查点是否被正确打上
+@property (nonatomic, assign) NSInteger rId;
 
 @end
 

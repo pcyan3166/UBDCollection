@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)shareInstanceWithFilePath:(NSString *)localFilePath;
 
 /// 从网络上获取新配置
-- (void)checkForUpdate;
+/// @param urlPath 网络上这个配置文件的url
+- (void)checkForUpdateWithRemoteUrl:(NSString *)urlPath;
 
 /// 获取某个页面对象的页面信息
 /// @param pInstance 页面对象

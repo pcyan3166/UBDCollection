@@ -10,6 +10,7 @@
 #import <BasicTools/BasicTools+DeviceInfo.h>
 #import <UBDCollection/UBDPageInfoProtocol.h>
 #import <UBDCollection/UBDPageInfo.h>
+#import <UBDCollection/UBDDatabaseService.h>
 
 @interface YGYViewController () <UBDPageInfoProtocol>
 
@@ -28,6 +29,8 @@
     
     NSLog(@"current moduleId is %ld", [self _ubd_module_id_]);
     NSLog(@"current moduleId is %ld", [self _ubd_page_id_]);
+    
+    [UBDDatabaseService shareInstance];
 }
 
 - (void)didReceiveMemoryWarning {

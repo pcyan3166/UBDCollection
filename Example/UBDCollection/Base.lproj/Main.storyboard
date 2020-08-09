@@ -24,7 +24,7 @@
             </objects>
             <point key="canvasLocation" x="-1039" y="1076"/>
         </scene>
-        <!--View Controller-->
+        <!--Tab2-->
         <scene sceneID="oTP-IJ-Xih">
             <objects>
                 <viewController id="pvb-FE-J53" customClass="YGYViewController" sceneMemberID="viewController">
@@ -50,13 +50,13 @@
                             <constraint firstItem="D4R-Wx-2G8" firstAttribute="centerY" secondItem="QUA-B8-bP1" secondAttribute="centerY" id="hQG-CS-B1J"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="cri-N8-bXv"/>
+                    <navigationItem key="navigationItem" title="Tab2" id="cri-N8-bXv"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q3J-d9-GRY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-183.19999999999999" y="1075.4122938530736"/>
         </scene>
-        <!--Page One View Controller-->
+        <!--Four-->
         <scene sceneID="Pbh-Se-RiF">
             <objects>
                 <viewController id="v0a-4V-S4W" customClass="YGYPageOneViewController" sceneMemberID="viewController">
@@ -67,13 +67,25 @@
                     <view key="view" contentMode="scaleToFill" id="Ocb-tU-JBd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="鄢明远小名叫一休" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vZ-KL-b8k">
+                                <rect key="frame" x="118" y="323" width="139" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="1vZ-KL-b8k" firstAttribute="centerY" secondItem="Ocb-tU-JBd" secondAttribute="centerY" id="ASt-dw-e08"/>
+                            <constraint firstItem="1vZ-KL-b8k" firstAttribute="centerX" secondItem="Ocb-tU-JBd" secondAttribute="centerX" id="vLN-tQ-V4b"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="x2H-k5-hNZ"/>
+                    <navigationItem key="navigationItem" title="Four" id="x2H-k5-hNZ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VOW-Cw-uu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="620" y="1075"/>
+            <point key="canvasLocation" x="620" y="1074.5127436281859"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ab5-Gq-DT3">
