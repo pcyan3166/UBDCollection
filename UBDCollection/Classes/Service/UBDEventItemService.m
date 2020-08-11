@@ -12,16 +12,6 @@
 
 @implementation UBDEventItemService
 
-+ (instancetype)shareInstance {
-    static UBDEventItemService *sInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sInstance = [[UBDEventItemService alloc] init];
-    });
-    
-    return sInstance;
-}
-
 + (void)addEvent:(UBDEventItem *)item {
     NSString *sql = [NSString stringWithFormat:@"insert into t_events \
                      (moduleId, pageId, eventId, eventType, pLevel, extraInfo, sendStatus, realTime, ts) values (%ld, %ld, %ld, %d, %ld, %@, %lu, %d, %ld)",
@@ -69,7 +59,7 @@
 }
 
 + (void)getPreviousPageEventsWithPartitionEventId:(NSInteger)eId
-                                            order:(BOOL)isDesc
+                                        descOrder:(BOOL)isDesc
                                      andPageCount:(NSUInteger)count
                                    andResultBlock:(GetEventsDataResultBlock)resultBlock {
     NSString *sql = [NSString stringWithFormat:@"select * from t_events order by eId %@ limit %lu",
@@ -107,7 +97,7 @@
 }
 
 + (void)getNextPageEventsWithPartitionEventId:(NSInteger)eId
-                                        order:(BOOL)isDesc
+                                    descOrder:(BOOL)isDesc
                                  andPageCount:(NSUInteger)count
                                andResultBlock:(GetEventsDataResultBlock)resultBlock {
     NSString *sql = [NSString stringWithFormat:@"select * from t_events order by eId %@ limit %lu",

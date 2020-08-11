@@ -16,9 +16,6 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 /// 管理存放和获取行为日志的服务
 @interface UBDEventItemService : NSObject
 
-/// 单例对象
-+ (instancetype)shareInstance;
-
 /// 添加一条行为日志
 /// @param item 日志条目
 + (void)addEvent:(UBDEventItem *)item;
@@ -41,7 +38,7 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 /// @param count 要获取的数据条目数
 /// @param resultBlock 异步结果回调
 + (void)getPreviousPageEventsWithPartitionEventId:(NSInteger)eId
-                                            order:(BOOL)isDesc
+                                        descOrder:(BOOL)isDesc
                                      andPageCount:(NSUInteger)count
                                    andResultBlock:(GetEventsDataResultBlock)resultBlock;
 
@@ -51,7 +48,7 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 /// @param count 要获取的数据条目数
 /// @param resultBlock 异步结果回调
 + (void)getNextPageEventsWithPartitionEventId:(NSInteger)eId
-                                        order:(BOOL)isDesc
+                                    descOrder:(BOOL)isDesc
                                  andPageCount:(NSUInteger)count
                                andResultBlock:(GetEventsDataResultBlock)resultBlock;
 
