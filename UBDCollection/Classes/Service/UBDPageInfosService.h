@@ -48,6 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param pClassName 页面对象的名称
 - (BOOL)setPageInfo:(UBDPageInfoItem *)pageInfo forForPageClassName:(NSString *)pClassName;
 
+/// 真实存储的页面信息的文件路径
+@property (nonatomic, strong, readonly) NSString *filePathForWritten;
+
 @end
 
 NS_ASSUME_NONNULL_END

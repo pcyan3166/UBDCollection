@@ -61,6 +61,8 @@
                 validPathForWritten = [documentRootPath stringByAppendingPathComponent:@"UBDCollection/UBDPageInfos.plist"];
             }
         }
+        
+        _filePathForWritten = validPathForWritten;
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self
