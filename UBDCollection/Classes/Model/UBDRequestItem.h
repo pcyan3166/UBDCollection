@@ -19,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger rId;
 
 /// 请求发起的时间戳
-@property (nonatomic, assign) NSTimeInterval reqTs;
+@property (nonatomic, assign) NSInteger reqTs;
 
 /// 收到响应的时间戳
-@property (nonatomic, assign) NSTimeInterval resTs;
+@property (nonatomic, assign) NSInteger resTs;
 
 /// 是否成功（YES为成功，NO为不成功）
 @property (nonatomic, assign) BOOL success;

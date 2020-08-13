@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UBDEventsPackage : NSObject
 
 #pragma mark - 公共字段
+/// 数据库中的Id
+@property (nonatomic, assign) NSInteger epId;
 /// app 唯一标识
 @property (nonatomic, strong) NSString *appId;
 /// app当前的版本号（2.2.2.95）
@@ -38,9 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 校验字段
 
 /// 上一次请求的时间戳
-@property (nonatomic, assign) NSTimeInterval preTs;
+@property (nonatomic, assign) NSInteger preTs;
 /// 当前这次请求的时间戳
-@property (nonatomic, assign) NSTimeInterval curTs;
+@property (nonatomic, assign) NSInteger curTs;
 
 #pragma mark - evnets 数据
 /// 本次包装的事件信息
