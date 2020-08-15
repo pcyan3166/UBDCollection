@@ -79,6 +79,28 @@
     }];
 }
 
++ (void)getEventsWithRequestId:(NSInteger)rId
+                andResultBlock:(GetEventsDataResultBlock)resultBlock {
+    if (rId > 0) {
+        NSString *sql = [NSString stringWithFormat:@"select * from t_events where rId = %ld", rId];
+        [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            FMResultSet *rs = [db executeQuery:sql];
+            
+            NSMutableArray *mArray = [NSMutableArray array];
+            while ([rs next]) {
+                UBDEventItem *item = [UBDEventItemService getEventItemFromResultSet:rs];
+                if (item != nil) {
+                    [mArray addObject:item];
+                }
+            }
+            resultBlock(mArray, NO);
+        }];
+    } else {
+        resultBlock(nil, NO);
+    }
+    
+}
+
 + (void)updateSendStatus:(ESendStatus)fromStatus
                 toStatus:(ESendStatus)toStatus
                forEvents:(NSArray<UBDEventItem *> * _Nullable)events {
@@ -142,7 +164,7 @@
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         FMResultSet *rs = [db executeQuery:sql];
         
-        NSMutableArray *mArray = [NSMutableArray arrayWithCapacity:count];
+        NSMutableArray *mArray = [NSMutableArray arrayWithCapacity:rs.accessibilityElementCount];
         while ([rs next]) {
             UBDEventItem *item = [UBDEventItemService getEventItemFromResultSet:rs];
             if (item != nil) {
@@ -150,19 +172,17 @@
             }
         }
         
-        if (resultBlock) {
-            BOOL hasMore = NO;
-            if (mArray.count > count) {
-                hasMore = YES;
-                if (removeHeader) {
-                    [mArray removeObjectAtIndex:0];
-                } else {
-                    [mArray removeLastObject];
-                }
+        BOOL hasMore = NO;
+        if (mArray.count > count) {
+            hasMore = YES;
+            if (removeHeader) {
+                [mArray removeObjectAtIndex:0];
+            } else {
+                [mArray removeLastObject];
             }
-            
-            resultBlock(mArray, hasMore);
         }
+        
+        resultBlock(mArray, hasMore);
     }];
 }
 
@@ -185,6 +205,61 @@
     eventItem.rId = [rs intForColumn:@"rId"];
     
     return eventItem;
+}
+
++ (void)findAEventsWithModuleId:(NSInteger)moduleId
+                      andPageId:(NSInteger)pageId
+                     andEventId:(NSInteger)eventId
+                   andEventType:(EEventType)eventType
+                 andResultBlock:(GetEventsDataResultBlock)resultBlock {
+    NSMutableString *mSql = [[NSMutableString alloc] initWithString:@"select * from t_events"];
+    BOOL hit = NO;
+    
+    if (moduleId >= 0) {
+        [mSql appendFormat:@" where moduleId = %ld", moduleId];
+        hit = YES;
+    }
+    
+    if (pageId >= 0) {
+        if (hit) {
+            [mSql appendFormat:@" and pageId = %ld", pageId];
+        } else {
+            [mSql appendFormat:@" where pageId = %ld", pageId];
+        }
+        hit = YES;
+    }
+    
+    if (eventId >= 0) {
+        if (hit) {
+            [mSql appendFormat:@" and eventId = %ld", eventId];
+        } else {
+            [mSql appendFormat:@" where eventId = %ld", eventId];
+        }
+        hit = YES;
+    }
+    
+    if (eventType != eAllEvents) {
+        if (hit) {
+            [mSql appendFormat:@" and eventType = %d", eventType];
+        } else {
+            [mSql appendFormat:@" where eventType = %d", eventType];
+        }
+        hit = YES;
+    }
+    
+    [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet *rs = [db executeQuery:mSql];
+        
+        NSMutableArray *mArray = [NSMutableArray arrayWithCapacity:rs.accessibilityElementCount];
+        while ([rs next]) {
+            UBDEventItem *item = [UBDEventItemService getEventItemFromResultSet:rs];
+            if (item != nil) {
+                [mArray addObject:item];
+            }
+        }
+        
+        resultBlock(mArray, NO);
+    }];
 }
 
 @end

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^GetEventsDataResultBlock)(NSArray<UBDEventItem *> *items, BOOL hasMore);
+typedef void(^GetEventsDataResultBlock)(NSArray<UBDEventItem *> * _Nullable items, BOOL hasMore);
 typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 
 /// 管理存放和获取行为日志的服务
@@ -41,6 +41,12 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 /// @param events 需要更新的events
 + (void)updateRequestId:(NSInteger)rId forEvents:(NSArray<UBDEventItem *> *)events;
 
+/// 根据requestId获取该批上传的日志信息
+/// @param rId 指定批次的requestId
+/// @param resultBlock 结果回调
++ (void)getEventsWithRequestId:(NSInteger)rId
+                andResultBlock:(GetEventsDataResultBlock)resultBlock;
+
 /// 更新指定的事件的状态
 /// @param fromStatus 需要更新的状态
 /// @param toStatus 更新的目的状态
@@ -68,6 +74,18 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
                                     descOrder:(BOOL)isDesc
                                  andPageCount:(NSUInteger)count
                                andResultBlock:(GetEventsDataResultBlock)resultBlock;
+
+/// 根据相关条件获取数据
+/// @param moduleId 模块Id，小于0时忽略该条件以支持模糊查询
+/// @param pageId 页面Id，小于0时忽略该条件以支持模糊查询
+/// @param eventId 事件Id，小于0时忽略该条件以支持模糊查询
+/// @param eventType 事件类型，eAllEvents时忽略该条件以支持模糊查询
+/// @param resultBlock 结果回调
++ (void)findAEventsWithModuleId:(NSInteger)moduleId
+                      andPageId:(NSInteger)pageId
+                     andEventId:(NSInteger)eventId
+                   andEventType:(EEventType)eventType
+                 andResultBlock:(GetEventsDataResultBlock)resultBlock;
 
 @end
 

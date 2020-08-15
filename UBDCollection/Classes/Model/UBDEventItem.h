@@ -20,6 +20,7 @@ typedef NS_ENUM(Byte, EEventType) {
     eClickEvent = 0,
     eShowEvent,
     eEnterPageEvent,
+    eAllEvents
 };
 
 /// 存储事件的数据结构

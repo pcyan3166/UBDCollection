@@ -211,19 +211,18 @@
             }
         }
         
-        if (resultBlock) {
-            BOOL hasMore = NO;
-            if (mArray.count > count) {
-                hasMore = YES;
-                if (removeHeader) {
-                    [mArray removeObjectAtIndex:0];
-                } else {
-                    [mArray removeLastObject];
-                }
+        BOOL hasMore = NO;
+        if (mArray.count > count) {
+            hasMore = YES;
+            if (removeHeader) {
+                [mArray removeObjectAtIndex:0];
+            } else {
+                [mArray removeLastObject];
             }
-            
-            resultBlock(mArray, hasMore);
         }
+        
+        [UBDRequestItemService fillPackagesInfoForRequests:mArray andDatabase:db];
+        resultBlock(mArray, hasMore);
     }];
 }
 
@@ -240,6 +239,41 @@
     requestItem.failReason = [rs stringForColumn:@"failReason"];
     
     return requestItem;
+}
+
++ (void)fillPackagesInfoForRequests:(NSArray<UBDRequestItem *> *)requests
+                        andDatabase:(FMDatabase * _Nonnull)db {
+    for (UBDRequestItem *item in requests) {
+        FMResultSet *rs = [db executeQuery:@"select * from t_events_packages where rId = %ld", item.rId];
+        UBDEventsPackage *packageItem = [UBDRequestItemService getPackageItemFromResultSet:rs];
+        item.eventPackage = packageItem;
+    }
+}
+
++ (UBDEventsPackage *)getPackageItemFromResultSet:(FMResultSet *)rs {
+    if (rs == nil) {
+        return nil;
+    }
+    
+    UBDEventsPackage *packgeItem = [[UBDEventsPackage alloc] init];
+    packgeItem.epId = [rs intForColumn:@"epId"];
+    packgeItem.appVersion = [rs stringForColumn:@"appVersion"];
+    packgeItem.osVersion = [rs stringForColumn:@"osVersion"];
+    packgeItem.networkType = [rs stringForColumn:@"networkType"];
+    packgeItem.deviceId = [rs stringForColumn:@"deviceId"];
+    packgeItem.userId = [rs stringForColumn:@"userId"];
+    
+    NSString *tagsStr = [rs stringForColumn:@"tags"];
+    if (tagsStr.length > 0) {
+        packgeItem.tags = [tagsStr componentsSeparatedByString:@","];
+    }
+    
+    packgeItem.appVersion = [rs stringForColumn:@"appVersion"];
+    packgeItem.preTs = [rs longLongIntForColumn:@"preTs"];
+    packgeItem.curTs = [rs longLongIntForColumn:@"curTs"];
+    packgeItem.rId = [rs intForColumn:@"rId"];
+    
+    return packgeItem;
 }
 
 + (void)findARequestItemWithId:(NSInteger)rId
