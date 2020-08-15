@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class UBDRequestItem;
-typedef void(^GetRequestsDataResultBlock)(NSArray<UBDRequestItem *> *items, BOOL hasMore);
+typedef void(^GetRequestsDataResultBlock)(NSArray<UBDRequestItem *> * _Nullable items, BOOL hasMore);
 typedef void(^CreateRequestItemResultBlock)(UBDRequestItem * _Nullable item);
 typedef void(^AddRequestItemResultBlock)(UBDRequestItem * _Nullable item);
 
@@ -36,19 +36,29 @@ typedef void(^AddRequestItemResultBlock)(UBDRequestItem * _Nullable item);
 
 /// 分页获取数据时，获取上一页数据（结果按自增Id倒序排列，所以这里是获取时间戳更早的数据）
 /// @param rId 当前数据的最大Id，返回的数据比这个Id更大
+/// @param isDesc 是否按照入库顺序的倒序排列
 /// @param count 要获取的数据条目数
 /// @param resultBlock 异步结果回调
 + (void)getPreviousPageRequestsWithPartitionRequestId:(NSInteger)rId
+                                            descOrder:(BOOL)isDesc
                                          andPageCount:(NSUInteger)count
                                        andResultBlock:(GetRequestsDataResultBlock)resultBlock;
 
 /// 分页获取数据时，获取下一页数据（结果按自增Id倒序排列，所以这里是获取时间戳更晚的数据）
 /// @param rId 当前数据的最小Id，返回的数据比这个Id更小
+/// @param isDesc 是否按照入库顺序的倒序排列
 /// @param count 要获取的数据条目数
 /// @param resultBlock 异步结果回调
 + (void)getNextPageRequestsWithPartitionRequestId:(NSInteger)rId
+                                        descOrder:(BOOL)isDesc
                                      andPageCount:(NSUInteger)count
                                    andResultBlock:(GetRequestsDataResultBlock)resultBlock;
+
+/// 根据请求Id找到请求信息
+/// @param rId 请求Id
+/// @param resultBlock 结果回调
++ (void)findARequestItemWithId:(NSInteger)rId
+                andResultBlock:(GetRequestsDataResultBlock)resultBlock;
 
 @end
 

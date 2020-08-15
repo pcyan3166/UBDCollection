@@ -63,6 +63,7 @@
             if (item != nil) {
                 package.rId = item.rId;
                 [UBDRequestItemService addPackageInfoItem:package];
+                [UBDEventItemService updateSendStatus:eUnknown toStatus:eSending forEvents:items];
             }
             
             resultBlock(item);
@@ -108,9 +109,9 @@
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         [db executeUpdate:sql];
         
-        FMResultSet *set = [db executeQuery:@"select * from t_events where rowid = last_insert_rowid()"];
+        FMResultSet *set = [db executeQuery:@"select rId from t_events where rowid = last_insert_rowid()"];
         if ([set next]) {
-            item.rId = [set intForColumn:@"rId"];
+            item.rId = [set intForColumnIndex:0];
             if (result) {
                 result(item);
             }
@@ -129,7 +130,8 @@
     }
     
     NSString *sql = [NSString stringWithFormat:@"insert into t_events_packages \
-                     (appVersion, osVersion, networkType, deviceId, userId, tags, preTs, curTs, rId) values (%@, %@, %@, %@, %@, %@, %ld, %ld, %ld)",
+                     (appVersion, osVersion, networkType, deviceId, userId, tags, preTs, curTs, rId) values \
+                     (%@, %@, %@, %@, %@, %@, %ld, %ld, %ld)",
                      item.appVersion, item.osVersion, item.networkType, item.deviceId, item.userId ? item.userId : @"''",
                      tags ? tags : @"''", item.preTs, item.curTs, item.rId];
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -138,19 +140,124 @@
 }
 
 + (void)clearRequests {
-    //
+    [[UBDDatabaseService shareInstance].databaseQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        FMResultSet *set = [db executeQuery:@"select rId from t_requests"];
+        while ([set next]) {
+            NSInteger rId = [set intForColumnIndex:0];
+            if (rId > 0) {
+                // 删除相关联的events信息
+                [UBDEventItemService removeEventsWithRequestId:rId];
+            }
+        }
+        
+        // 删除所有请求packge信息
+        [db executeUpdate:@"delete from t_events_packages"];
+        
+        // 删除所有数据
+        [db executeUpdate:@"delete from t_requests"];
+    }];
 }
 
 + (void)getPreviousPageRequestsWithPartitionRequestId:(NSInteger)rId
+                                            descOrder:(BOOL)isDesc
                                          andPageCount:(NSUInteger)count
                                        andResultBlock:(GetRequestsDataResultBlock)resultBlock {
-    //
+    NSString *sql = [NSString stringWithFormat:@"select * from t_requests order by rId %@ limit %lu",
+                     isDesc ? @"desc" : @"asc", count + 1];
+    if (rId > 0) {
+        if (isDesc) {
+            sql = [NSString stringWithFormat:@"select * from t_requests where rId > %ld order by rId %@ limit %lu",
+                   rId, isDesc ? @"desc" : @"asc", count + 1];
+        } else {
+            sql = [NSString stringWithFormat:@"select * from t_requests where rId < %ld order by rId %@ limit %lu",
+                   rId, isDesc ? @"desc" : @"asc", count + 1];
+        }
+    }
+    
+    [UBDRequestItemService getEventsDataWithSql:sql withCount:count andResultBlock:resultBlock withRemoveFlag:YES];
 }
 
 + (void)getNextPageRequestsWithPartitionRequestId:(NSInteger)rId
+                                        descOrder:(BOOL)isDesc
                                      andPageCount:(NSUInteger)count
                                    andResultBlock:(GetRequestsDataResultBlock)resultBlock {
-    //
+    NSString *sql = [NSString stringWithFormat:@"select * from t_requests order by rId %@ limit %lu",
+                     isDesc ? @"desc" : @"asc", count + 1];
+    if (rId > 0) {
+        if (isDesc) {
+            sql = [NSString stringWithFormat:@"select * from t_requests where rId < %ld order by rId %@ limit %lu",
+                   rId, isDesc ? @"desc" : @"asc", count + 1];
+        } else {
+            sql = [NSString stringWithFormat:@"select * from t_requests where rId > %ld order by rId %@ limit %lu",
+                   rId, isDesc ? @"desc" : @"asc", count + 1];
+        }
+    }
+    
+    [UBDRequestItemService getEventsDataWithSql:sql withCount:count andResultBlock:resultBlock withRemoveFlag:NO];
+}
+
++ (void)getEventsDataWithSql:(NSString *)sql
+                   withCount:(NSUInteger)count
+              andResultBlock:(GetEventsDataResultBlock)resultBlock
+              withRemoveFlag:(BOOL)removeHeader{
+    [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet *rs = [db executeQuery:sql];
+        
+        NSMutableArray *mArray = [NSMutableArray arrayWithCapacity:count];
+        while ([rs next]) {
+            UBDRequestItem *item = [UBDRequestItemService getRequestItemFromResultSet:rs];
+            if (item != nil) {
+                [mArray addObject:item];
+            }
+        }
+        
+        if (resultBlock) {
+            BOOL hasMore = NO;
+            if (mArray.count > count) {
+                hasMore = YES;
+                if (removeHeader) {
+                    [mArray removeObjectAtIndex:0];
+                } else {
+                    [mArray removeLastObject];
+                }
+            }
+            
+            resultBlock(mArray, hasMore);
+        }
+    }];
+}
+
++ (UBDRequestItem *)getRequestItemFromResultSet:(FMResultSet *)rs {
+    if (rs == nil) {
+        return nil;
+    }
+    
+    UBDRequestItem *requestItem = [[UBDRequestItem alloc] init];
+    requestItem.rId = [rs intForColumn:@"rId"];
+    requestItem.reqTs = [rs longLongIntForColumn:@"reqTs"];
+    requestItem.resTs = [rs longLongIntForColumn:@"resTs"];
+    requestItem.success = [rs boolForColumn:@"success"];
+    requestItem.failReason = [rs stringForColumn:@"failReason"];
+    
+    return requestItem;
+}
+
++ (void)findARequestItemWithId:(NSInteger)rId
+                andResultBlock:(GetRequestsDataResultBlock)resultBlock {
+    if (rId > 0) {
+        [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            NSString *sql = [NSString stringWithFormat:@"select * from t_requests where rId = %ld", rId];
+            FMResultSet *rs = [db executeQuery:sql];
+            if ([rs next]) {
+                UBDRequestItem *item = [UBDRequestItemService getRequestItemFromResultSet:rs];
+                resultBlock(@[item], NO);
+            } else {
+                resultBlock(nil, NO);
+            }
+        }];
+    } else {
+        resultBlock(nil, NO);
+    }
 }
 
 @end

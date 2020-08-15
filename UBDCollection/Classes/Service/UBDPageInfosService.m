@@ -11,66 +11,27 @@
 @interface UBDPageInfosService ()
 
 @property (nonatomic, strong) NSDictionary *pageInfoDic;
-@property (nonatomic, strong) NSString *pageInfoFilePath;
 
 @end
 
 @implementation UBDPageInfosService
 
-+ (instancetype)shareInstanceWithFilePath:(NSString *)localFilePath {
++ (instancetype)shareInstanceWithFilePath:(NSString * _Nullable)loadFilePath {
     static UBDPageInfosService *sInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sInstance = [[UBDPageInfosService alloc] init];
-        sInstance.pageInfoFilePath = localFilePath;
-        [sInstance loadDataFromFile:localFilePath];
+        [sInstance loadDataFromFile:loadFilePath];
     });
     
     return sInstance;
 }
 
-- (void)loadDataFromFile:(NSString *)filePath {
-    if (filePath.length <= 0) {
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        NSString *bundlePath = [bundle pathForResource:@"UBDCollection" ofType:@"bundle"];
-        bundle = [NSBundle bundleWithPath:bundlePath];
-        filePath = [bundle pathForResource:@"UBDPageInfos" ofType:@"plist"];
-        _pageInfoFilePath = filePath;
-    }
-    
-    _pageInfoDic = [NSDictionary dictionaryWithContentsOfFile:filePath];
-}
-
-- (void)savePageInfoIntoFile:(NSString *)filePath {
-    if (filePath.length > 0) {
-        [_pageInfoDic writeToFile:filePath atomically:YES];
-    }
-}
-
-- (void)efficientlySavePageInfo {
-    static NSString *validPathForWritten = nil;
-    if (validPathForWritten == nil) {
-        @synchronized (_pageInfoFilePath) {
-            validPathForWritten = [_pageInfoFilePath copy];
-            NSString *mainBundlePath = [NSBundle mainBundle].bundlePath;
-            
-            // 如果路径在mainBundle下，肯定不可写，那换个可写的地方
-            if ([validPathForWritten hasPrefix:mainBundlePath]) {
-                NSArray *documentpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentRootPath = documentpaths[0];
-                validPathForWritten = [documentRootPath stringByAppendingPathComponent:@"UBDCollection/UBDPageInfos.plist"];
-            }
-        }
-        
-        _filePathForWritten = validPathForWritten;
-    }
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(savePageInfoIntoFile:)
-                                               object:validPathForWritten];
-    
-    // 3秒延时存储，避免大量调用多次无效写入
-    [self performSelector:@selector(savePageInfoIntoFile:) withObject:validPathForWritten afterDelay:3.0];
++ (NSString *)filePathForTesting {
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *bundlePath = [bundle pathForResource:@"UBDCollection" ofType:@"bundle"];
+    bundle = [NSBundle bundleWithPath:bundlePath];
+    return [bundle pathForResource:@"UBDPageInfos" ofType:@"plist"];
 }
 
 - (void)checkForUpdateWithRemoteUrl:(NSString *)urlPath {
@@ -80,10 +41,17 @@
             NSURL *URL = [NSURL URLWithString:urlPath];
             NSDictionary *dic = [NSDictionary dictionaryWithContentsOfURL:URL];
             if (dic != nil && [dic isKindOfClass:[NSDictionary class]] && dic.count > 0) {
-                NSInteger version = [dic[@"version"] integerValue];
-                NSInteger localVersion = [weakSelf.pageInfoDic[@"version"] integerValue];
-                if (version > localVersion) {
-                    weakSelf.pageInfoDic = dic;
+                NSNumber *versionNum = dic[@"version"];
+                NSNumber *localVersionNum = weakSelf.pageInfoDic[@"version"];
+                if (versionNum != nil && [versionNum isKindOfClass:[NSNumber class]] &&
+                    localVersionNum != nil && [localVersionNum isKindOfClass:[NSNumber class]]) {
+                    NSInteger version = [versionNum integerValue];
+                    NSInteger localVersion = [localVersionNum integerValue];
+                    if (version > localVersion) {
+                        weakSelf.pageInfoDic = dic;
+                    }
+                } else {
+                    NSLog(@"远端或本地配置文件version缺失");
                 }
             }
         }
@@ -137,6 +105,54 @@
     }
     
     return NO;
+}
+
+#pragma mark - private functions
+
+- (void)loadDataFromFile:(NSString *)filePath {
+    if (filePath.length <= 0) {
+        _pageInfoFilePath = [self aValidPathForWritten];
+        _pageInfoDic = [NSDictionary dictionaryWithContentsOfFile:_pageInfoFilePath];
+    } else {
+        _pageInfoDic = [NSDictionary dictionaryWithContentsOfFile:filePath];
+        if ([self isValidPathForWritten:filePath]) {
+            _pageInfoFilePath = [filePath copy];
+        } else {
+            _pageInfoFilePath = [self aValidPathForWritten];
+        }
+    }
+}
+
+- (void)savePageInfoIntoFile:(NSString *)filePath {
+    if (filePath.length > 0) {
+        [_pageInfoDic writeToFile:filePath atomically:YES];
+    }
+}
+
+- (void)efficientlySavePageInfo {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                             selector:@selector(savePageInfoIntoFile:)
+                                               object:_pageInfoFilePath];
+    
+    // 3秒延时存储，避免大量调用多次无效写入
+    [self performSelector:@selector(savePageInfoIntoFile:) withObject:_pageInfoFilePath afterDelay:3.0];
+}
+
+- (BOOL)isValidPathForWritten:(NSString *)filePath {
+    NSString *mainBundlePath = [NSBundle mainBundle].bundlePath;
+    
+    // 如果路径在mainBundle下，肯定不可写，那换个可写的地方
+    if ([filePath hasPrefix:mainBundlePath]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (NSString *)aValidPathForWritten {
+    NSArray *documentpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentRootPath = documentpaths[0];
+    return [documentRootPath stringByAppendingPathComponent:@"UBDCollection/UBDPageInfos.plist"];
 }
 
 @end

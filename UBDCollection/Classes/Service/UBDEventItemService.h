@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UBDEventItem.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class UBDEventItem;
 typedef void(^GetEventsDataResultBlock)(NSArray<UBDEventItem *> *items, BOOL hasMore);
 typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 
@@ -29,8 +29,25 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 /// @param eId 指定日志Id
 + (void)removeEventWithId:(NSInteger)eId;
 
+/// 清除指定requestId对应的日志
+/// @param rId 指定requestId，如果rId <= 0；则清除所有数据
++ (void)removeEventsWithRequestId:(NSInteger)rId;
+
 /// 清除所有日志
 + (void)clearEvents;
+
+/// 为一系列events更新requestId
+/// @param rId 更新的目标requestId值
+/// @param events 需要更新的events
++ (void)updateRequestId:(NSInteger)rId forEvents:(NSArray<UBDEventItem *> *)events;
+
+/// 更新指定的事件的状态
+/// @param fromStatus 需要更新的状态
+/// @param toStatus 更新的目的状态
+/// @param events 指定需要更新哪些条目，如果为空，则更新所有满足状态条件的条目
++ (void)updateSendStatus:(ESendStatus)fromStatus
+                toStatus:(ESendStatus)toStatus
+               forEvents:(NSArray<UBDEventItem *> * _Nullable)events;
 
 /// 分页获取数据时，获取上一页数据（结果按自增Id倒序排列，所以这里是获取时间戳更早的数据）
 /// @param eId 当前数据的最大Id，返回的数据比这个Id更大

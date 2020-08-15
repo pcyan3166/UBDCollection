@@ -15,7 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UBDPageInfosService : NSObject
 
 /// 单例对象
-+ (instancetype)shareInstanceWithFilePath:(NSString *)localFilePath;
++ (instancetype)shareInstanceWithFilePath:(NSString * _Nullable)localFilePath;
+
+/// 用于测试的配置文件
++ (NSString *)filePathForTesting;
 
 /// 从网络上获取新配置
 /// @param urlPath 网络上这个配置文件的url
@@ -49,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)setPageInfo:(UBDPageInfoItem *)pageInfo forForPageClassName:(NSString *)pClassName;
 
 /// 真实存储的页面信息的文件路径
-@property (nonatomic, strong, readonly) NSString *filePathForWritten;
+@property (nonatomic, strong, readonly) NSString *pageInfoFilePath;
 
 @end
 
