@@ -98,7 +98,24 @@
     } else {
         resultBlock(nil, NO);
     }
-    
+}
+
++ (void)getEventsCountWithStatus:(ESendStatus)sendStatus
+                  andResultBlock:(GetEventCountResultBlock)reslutBlock {
+    [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        NSString *sql = @"select count(*) from t_events";
+        if (sendStatus != eAllStatus) {
+            sql = [NSString stringWithFormat:@"select count(*) from t_events where sendStatus = %lu", sendStatus];
+        }
+        
+        FMResultSet *rs = [db executeQuery:sql];
+        if ([rs next]) {
+            NSUInteger count = [rs unsignedLongLongIntForColumnIndex:0];
+            reslutBlock(count);
+        } else {
+            reslutBlock(0);
+        }
+    }];
 }
 
 + (void)updateSendStatus:(ESendStatus)fromStatus

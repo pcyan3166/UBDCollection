@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^GetEventsDataResultBlock)(NSArray<UBDEventItem *> * _Nullable items, BOOL hasMore);
 typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
+typedef void(^GetEventCountResultBlock)(NSUInteger count);
 
 /// 管理存放和获取行为日志的服务
 @interface UBDEventItemService : NSObject
@@ -46,6 +47,12 @@ typedef void(^AddEventsDataResultBlock)(UBDEventItem *items);
 /// @param resultBlock 结果回调
 + (void)getEventsWithRequestId:(NSInteger)rId
                 andResultBlock:(GetEventsDataResultBlock)resultBlock;
+
+/// 获取指定状态的日志信息条目数
+/// @param sendStatus 发送状态
+/// @param reslutBlock 结果回调
++ (void)getEventsCountWithStatus:(ESendStatus)sendStatus
+                  andResultBlock:(GetEventCountResultBlock)reslutBlock;
 
 /// 更新指定的事件的状态
 /// @param fromStatus 需要更新的状态
