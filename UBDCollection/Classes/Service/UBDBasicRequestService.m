@@ -39,7 +39,7 @@
         return [self.requestStatusInfo[tag] integerValue];
     }
     
-    return eUnknown;
+    return eRequestStatusUnknown;
 }
 
 - (NSDictionary *)requestStatusInfo {

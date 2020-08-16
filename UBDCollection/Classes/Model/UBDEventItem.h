@@ -10,10 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_OPTIONS(NSUInteger, ESendStatus) {
-    eUnknown =          0,          // 初始值，未知状态
-    eSending =          0 << 1,     // 发送中
-    eFinished =         1 << 1,     // 收到响应，发送完成
-    eAllStatus =        0xFFFFFFFF  // 所有状态
+    eSendStatusUnknown =          0,          // 初始值，未知状态
+    eSendStatusSending =          0 << 1,     // 发送中
+    eSendStatusFinished =         1 << 1,     // 收到响应，发送完成
+    eSendStatusAllStatus =        0xFFFFFFFF  // 所有状态
 };
 
 typedef NS_ENUM(Byte, EEventType) {

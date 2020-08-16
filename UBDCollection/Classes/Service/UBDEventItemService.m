@@ -104,7 +104,7 @@
                   andResultBlock:(GetEventCountResultBlock)reslutBlock {
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         NSString *sql = @"select count(*) from t_events";
-        if (sendStatus != eAllStatus) {
+        if (sendStatus != eSendStatusAllStatus) {
             sql = [NSString stringWithFormat:@"select count(*) from t_events where sendStatus = %lu", sendStatus];
         }
         

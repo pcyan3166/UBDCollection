@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^UDBUploadDataResultBlock)(BOOL success, BOOL hasMoreData);
+typedef void(^UDBUploadDataResultBlock)(BOOL success, NSUInteger realCount, BOOL hasMoreData);
 
 @interface UDBUploadDataService : UBDBasicRequestService
 

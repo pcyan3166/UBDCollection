@@ -36,19 +36,21 @@
         [UBDEventItemService getPreviousPageEventsWithPartitionEventId:-1 descOrder:NO andPageCount:count andResultBlock:^(NSArray<UBDEventItem *> * _Nonnull items, BOOL hasMore) {
             if (items.count > 0) {
                 [UBDRequestItemService createARequestWithEvents:items
-                                                 andResultBlock:^(UBDRequestItem * _Nullable item) {
-                    resultBlock(item);
+                                                        hasMore:hasMore
+                                                 andResultBlock:^(UBDRequestItem * _Nullable item, BOOL hasMore) {
+                    resultBlock(item, hasMore);
                 }];
             } else {
-                resultBlock(nil);
+                resultBlock(nil, NO);
             }
         }];
     } else {
-        resultBlock(nil);
+        resultBlock(nil, NO);
     }
 }
 
 + (void)createARequestWithEvents:(NSArray<UBDEventItem *> * _Nonnull)items
+                         hasMore:(BOOL)hasMore
                   andResultBlock:(CreateRequestItemResultBlock)resultBlock {
     if (items.count > 0) {
         UBDEventsPackage *package = [UBDRequestItemService createAPackageWithEvents:items];
@@ -63,10 +65,10 @@
             if (item != nil) {
                 package.rId = item.rId;
                 [UBDRequestItemService addPackageInfoItem:package];
-                [UBDEventItemService updateSendStatus:eUnknown toStatus:eSending forEvents:items];
+                [UBDEventItemService updateSendStatus:eSendStatusUnknown toStatus:eSendStatusSending forEvents:items];
             }
             
-            resultBlock(item);
+            resultBlock(item, hasMore);
         }];
     }
 }

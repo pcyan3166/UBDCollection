@@ -9,11 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, ERequestStatus) {
-    eUnknown = 0,               // 未知状态
-    eWaitingForSending,         // 等待发送
-    eSending,                   // 发送中
-    eSended,                    // 已发送
-    eResponded                  // 已回应
+    eRequestStatusUnknown = 0,               // 未知状态
+    eRequestStatusWaitingForSending,         // 等待发送
+    eRequestStatusSending,                   // 发送中
+    eRequestStatusSended,                    // 已发送
+    eRequestStatusResponded                  // 已回应
 };
 typedef void(^UBDRequestReslutBlock)(id data, NSError *error);
 

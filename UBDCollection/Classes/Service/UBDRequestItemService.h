@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class UBDRequestItem;
 typedef void(^GetRequestsDataResultBlock)(NSArray<UBDRequestItem *> * _Nullable items, BOOL hasMore);
-typedef void(^CreateRequestItemResultBlock)(UBDRequestItem * _Nullable item);
+typedef void(^CreateRequestItemResultBlock)(UBDRequestItem * _Nullable item, BOOL hasMore);
 typedef void(^AddRequestItemResultBlock)(UBDRequestItem * _Nullable item);
 
 /// 管理存放和获取请求信息的服务
