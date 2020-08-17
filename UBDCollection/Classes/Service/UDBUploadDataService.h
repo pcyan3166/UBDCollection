@@ -9,9 +9,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class UBDRequestItem;
+
+@protocol UBDDataPackageProtocol <NSObject>
+
+- (NSDictionary *)packageDataWithRequestItem:(UBDRequestItem *)requestItem;
+
+@end
+
 typedef void(^UDBUploadDataResultBlock)(BOOL success, NSUInteger realCount, BOOL hasMoreData);
 
 @interface UDBUploadDataService : UBDBasicRequestService
+
+@property (nonatomic, strong) id<UBDDataPackageProtocol> packager;
 
 /// 上传指定条目数的日志数据
 /// @param count 条目数

@@ -16,7 +16,6 @@
 #import <BasicTools/PublicValueSaverService.h>
 
 #define UBD_REQUEST_PRE_TIMESTAMP_KEY   @"ubdRequestPreTimestamp"
-#define UBD_REQUEST_CUR_TIMESTAMP_KEY   @"ubdRequestCurTimestamp"
 
 @implementation UBDRequestItemService
 
