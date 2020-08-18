@@ -1,5 +1,5 @@
 //
-//  UDBUploadDataService.h
+//  UBDUploadDataService.h
 //  UBDCollection
 //
 //  Created by pengchao yan on 2020/8/16.
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^UDBUploadDataResultBlock)(BOOL success, NSUInteger realCount, BOOL hasMoreData);
 
-@interface UDBUploadDataService : UBDBasicRequestService
+@interface UBDUploadDataService : UBDBasicRequestService
 
 @property (nonatomic, strong) id<UBDDataPackageProtocol> packager;
 

@@ -5,7 +5,7 @@
 //  Created by pengchao yan on 2020/8/16.
 //
 
-#import "UDBUploadDataService.h"
+#import "UBDUploadDataService.h"
 #import "UBDEventItem.h"
 #import "UBDEventsPackage.h"
 #import "UBDRequestItem.h"
@@ -15,7 +15,7 @@
 #define COMMON_INFO_KEY @"common"
 #define EVENTS_INFO_KEY @"events"
 
-@implementation UDBUploadDataService
+@implementation UBDUploadDataService
 
 - (void)uploadDataWithCount:(NSUInteger)count andTag:(NSString *)tag andResultBlock:(UDBUploadDataResultBlock)resultBlock {
     [UBDRequestItemService createARequestToSendEventsWithCount:count andResultBlock:^(UBDRequestItem * _Nullable item, BOOL hasMore) {

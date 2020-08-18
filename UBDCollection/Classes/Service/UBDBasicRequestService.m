@@ -19,7 +19,10 @@
                       andTag:(NSString *)tag
               andResultBlock:(UBDRequestReslutBlock)resultBlock {
     if (tag.length > 0) {
-        //
+        [self updateStatus:eRequestStatusSending forTag:tag];
+        
+        // 发送完了
+        [self updateStatus:eRequestStatusResponded forTag:tag];
     }
 }
 

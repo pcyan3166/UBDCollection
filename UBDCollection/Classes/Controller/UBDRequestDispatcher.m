@@ -7,11 +7,17 @@
 
 #import "UBDRequestDispatcher.h"
 #import "UBDUploadStrategyBase.h"
+#import "UBDUploadDataService.h"
+#import <BasicTools/NetworkService.h>
+
+#define UPLOAD_REQUEST_TAG  @"uploadRequestTag"
 
 @interface UBDRequestDispatcher ()
 
 @property (nonatomic, strong) UBDUploadStrategyBase *uploadStrategy;
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) UBDUploadDataService *uploadDataService;
+@property (nonatomic, assign) BOOL needUploadNow;
 
 @end
 
@@ -35,6 +41,7 @@
 - (instancetype)initWithUploadStrategy:(UBDUploadStrategyBase *)uploadStrategy {
     if (self = [super init]) {
         self.uploadStrategy = uploadStrategy;
+        self.uploadDataService = [[UBDUploadDataService alloc] init];
     }
     
     return self;
@@ -45,7 +52,31 @@
 }
 
 - (void)tryToSendEventsInfo {
-    //
+    if ([self.uploadDataService requestStatusForTag:UPLOAD_REQUEST_TAG] != eRequestStatusSending) {
+        NSUInteger count = [self sendCountForCurrentNetWorkType];
+        if (count > 0) {
+            [self.uploadDataService uploadDataWithCount:count andTag:UPLOAD_REQUEST_TAG andResultBlock:^(BOOL success, NSUInteger realCount, BOOL hasMoreData) {
+                //
+            }];
+        } else {
+            self.needUploadNow = YES;
+        }
+    }
+}
+
+- (NSUInteger)sendCountForCurrentNetWorkType {
+    switch ([NetworkService micromeshShareInstance].networkStatus) {
+        case eNetworkStatus2G:
+        case eNetworkStatus3G:
+            return self.uploadStrategy.triggerEventsCountOnSlowWWAN;
+        case eNetworkStatus4G:
+            return self.uploadStrategy.triggerEventsCountOnFastWWAN;
+        case eNetworkStatusWifi:
+        case eNetworkStatusUnkown:
+            return self.uploadStrategy.triggerEventsCountOnWifi;
+        default:
+            return 0;
+    }
 }
 
 @end
