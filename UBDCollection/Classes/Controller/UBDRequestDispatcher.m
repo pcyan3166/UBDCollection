@@ -15,11 +15,16 @@
 
 @interface UBDRequestDispatcher ()
 
+/// 上传策略
 @property (nonatomic, strong) UBDUploadStrategyBase *uploadStrategy;
+/// 数据上传服务
 @property (nonatomic, strong) UBDUploadDataService *uploadDataService;
+/// 立即上传标记（上次上传成功后，发现这个标记，立即发送下一波数据）
 @property (nonatomic, assign) BOOL needUploadNow;
 
+/// app当前是否在激活状态
 @property (nonatomic, assign) BOOL appIsActive;
+/// 当前是否为app激活后第一次上传的请求，为了避免占用启动带宽，第一次请求有单独的上传延时
 @property (nonatomic, assign) BOOL firstUploadAfterActive;
 
 @end
@@ -52,16 +57,21 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillResignActive)
                                                      name:UIApplicationWillResignActiveNotification object:nil];
+        
+        // 初始化时，可能已经错过了第一次通知，所以手动启一次
+        [self applicationDidBecomeActive];
     }
     
     return self;
 }
 
 - (void)applicationDidBecomeActive {
-    _appIsActive = YES;
-    _firstUploadAfterActive = YES;
-    
-    [self tryToSendEventsInfoAfterDelay:[self uploadDelayAfterAppActiveForCurrentNetWorkType]];
+    if (!_appIsActive) {
+        _appIsActive = YES;
+        
+        _firstUploadAfterActive = YES;
+        [self tryToSendEventsInfoAfterDelay:[self uploadDelayAfterAppActiveForCurrentNetWorkType]];
+    }
 }
 
 - (void)applicationWillResignActive {
