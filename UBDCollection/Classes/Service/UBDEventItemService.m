@@ -15,7 +15,7 @@
 + (void)addEvent:(UBDEventItem *)item {
     NSString *sql = [NSString stringWithFormat:@"insert into t_events \
                      (moduleId, pageId, eventId, eventType, pLevel, extraInfo, sendStatus, realTime, ts) values \
-                     (%ld, %ld, %ld, %d, %ld, %@, %lu, %d, %ld)",
+                     (%ld, %ld, %ld, %d, %ld, '%@', %lu, %d, %ld)",
                      item.moduleId, item.pageId, item.eventId, item.eventType, item.pLevel,
                      item.extraInfo ? item.extraInfo : @"''", item.sendStatus, item.realTime, item.ts];
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -26,7 +26,7 @@
 + (void)addEvent:(UBDEventItem *)item withResult:(AddEventsDataResultBlock)result {
     NSString *sql = [NSString stringWithFormat:@"insert into t_events \
                      (moduleId, pageId, eventId, eventType, pLevel, extraInfo, sendStatus, realTime, ts) values \
-                     (%ld, %ld, %ld, %d, %ld, %@, %lu, %d, %ld)",
+                     (%ld, %ld, %ld, %d, %ld, '%@', %lu, %d, %ld)",
                      item.moduleId, item.pageId, item.eventId, item.eventType, item.pLevel,
                      item.extraInfo ? item.extraInfo : @"''", item.sendStatus, item.realTime, item.ts];
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {

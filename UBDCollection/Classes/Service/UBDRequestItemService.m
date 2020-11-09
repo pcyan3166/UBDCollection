@@ -105,7 +105,7 @@
 
 + (void)addRequest:(UBDRequestItem *)item withResult:(AddRequestItemResultBlock)result {
     NSString *sql = [NSString stringWithFormat:@"insert into t_requests \
-                     (reqTs, resTs, success, failReason) values (%ld, %ld, %d, %@)",
+                     (reqTs, resTs, success, failReason) values (%ld, %ld, %d, '%@')",
                      item.reqTs, item.resTs, item.success, item.failReason];
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         [db executeUpdate:sql];
@@ -132,9 +132,9 @@
     
     NSString *sql = [NSString stringWithFormat:@"insert into t_events_packages \
                      (appVersion, osVersion, networkType, deviceId, userId, tags, preTs, curTs, rId) values \
-                     (%@, %@, %@, %@, %@, %@, %ld, %ld, %ld)",
-                     item.appVersion, item.osVersion, item.networkType, item.deviceId, item.userId ? item.userId : @"''",
-                     tags ? tags : @"''", item.preTs, item.curTs, item.rId];
+                     ('%@', '%@', '%@', '%@', '%@', '%@', %ld, %ld, %ld)",
+                     item.appVersion, item.osVersion, item.networkType, item.deviceId, item.userId ? item.userId : @"",
+                     tags ? tags : @"", item.preTs, item.curTs, item.rId];
     [[UBDDatabaseService shareInstance].databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         [db executeUpdate:sql];
     }];
