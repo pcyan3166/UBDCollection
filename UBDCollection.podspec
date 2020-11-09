@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'UBDCollection'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'UBDCollection 提供 iOS 平台收集和分析用户信息的一系列辅助接口和分析页面'
 
 # This description is used to generate tags and improve search results.
